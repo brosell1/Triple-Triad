@@ -8,7 +8,7 @@ const boardStyle = {
 const Board = (props) => (
   <div style={ boardStyle }>
     {props.board.map((item, index) => (
-      <Panel index={ index } key={ index }>
+      <Panel index={ index } key={ index } onClick={() => props.onClick(index)}>
         <Card stats={ item.card.stats } player={ item.player }/>
       </Panel>
     ))}

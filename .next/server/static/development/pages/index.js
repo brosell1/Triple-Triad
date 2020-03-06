@@ -125,6 +125,7 @@ const Board = props => __jsx("div", {
 }, props.board.map((item, index) => __jsx(_panel__WEBPACK_IMPORTED_MODULE_1__["default"], {
   index: index,
   key: index,
+  onClick: () => props.onClick(index),
   __source: {
     fileName: _jsxFileName,
     lineNumber: 11
@@ -197,7 +198,7 @@ const inactive = {
 };
 
 const Card = props => __jsx("div", {
-  className: "card",
+  disabled: props.played === true,
   style: props.player === 1 ? player1 : props.player === 2 ? player2 : inactive,
   __source: {
     fileName: _jsxFileName,
@@ -234,7 +235,19 @@ const Card = props => __jsx("div", {
   __self: undefined
 }, props.stats.west));
 
-/* harmony default export */ __webpack_exports__["default"] = (Card);
+/* harmony default export */ __webpack_exports__["default"] = (Card); // <div ng-class="{disabled: $ctrl.disabled}"></div>
+// <div className={props.played === true ? "disabled" : ""}></div>
+
+/*
+
+<div className={classnames(
+{
+  'disabled': props.played === true,
+  'veryCool': props.cool === true,
+}
+)}></div>
+
+*/
 
 /***/ }),
 
@@ -281,7 +294,7 @@ const Deck = props => __jsx("div", {
   },
   __self: undefined
 }, "Player ", props.player), props.deck.map((item, index) => __jsx(_panel__WEBPACK_IMPORTED_MODULE_1__["default"], {
-  onClick: (player, index) => props.onClick(player, index),
+  onClick: () => props.onClick(props.player, index),
   key: index,
   __source: {
     fileName: _jsxFileName,
@@ -318,197 +331,215 @@ __webpack_require__.r(__webpack_exports__);
 var _jsxFileName = "/home/benr@packtpub.net/Documents/triple-triad/components/game.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 const flex = {
-  display: 'flex'
+  display: "flex"
 };
-const player1Deck = [];
-
-class Game extends react__WEBPACK_IMPORTED_MODULE_0___default.a.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      player1: {
-        deck: [{
-          name: 'Tonberry',
-          rarity: 1,
-          tribe: null,
-          stats: {
-            north: 2,
-            east: 2,
-            south: 7,
-            west: 2
-          }
-        }, {
-          name: 'Namazu',
-          rarity: 1,
-          tribe: 'Beastman',
-          stats: {
-            north: 1,
-            east: 6,
-            south: 1,
-            west: 5
-          }
-        }, {
-          name: 'Adamantoise',
-          rarity: 2,
-          tribe: null,
-          stats: {
-            north: 5,
-            east: 7,
-            south: 4,
-            west: 4
-          }
-        }, {
-          name: 'Ultros & Typhon',
-          rarity: 2,
-          tribe: null,
-          stats: {
-            north: 2,
-            east: 3,
-            south: 6,
-            west: 7
-          }
-        }, {
-          name: 'Garuda',
-          rarity: 3,
-          tribe: 'Primal',
-          stats: {
-            north: 7,
-            east: 6,
-            south: 1,
-            west: 7
-          }
-        }]
-      },
-      player2: {
-        deck: [{
-          name: 'Chocobo',
-          rarity: 1,
-          tribe: null,
-          stats: {
-            north: 3,
-            east: 7,
-            south: 2,
-            west: 1
-          }
-        }, {
-          name: 'Moogle',
-          rarity: 1,
-          tribe: 'Beastman',
-          stats: {
-            north: 2,
-            east: 1,
-            south: 3,
-            west: 7
-          }
-        }, {
-          name: 'Delivery Moogle',
-          rarity: 2,
-          tribe: 'Beastman',
-          stats: {
-            north: 5,
-            east: 5,
-            south: 6,
-            west: 3
-          }
-        }, {
-          name: 'Moglin',
-          rarity: 3,
-          tribe: 'Beastman',
-          stats: {
-            north: 8,
-            east: 5,
-            south: 4,
-            west: 5
-          }
-        }, {
-          name: 'Good King Moggle Mog XII',
-          rarity: 3,
-          tribe: 'Primal',
-          stats: {
-            north: 7,
-            east: 6,
-            south: 7,
-            west: 1
-          }
-        }]
-      },
-      board: Array(9).fill({
-        player: null,
-        card: {
-          name: null,
-          rarity: null,
-          tribe: null,
-          stats: {
-            north: null,
-            east: null,
-            south: null,
-            west: null
-          }
-        }
-      }),
-      turn: 1,
-      cardInHand: false,
-      indexOfCard: null
-    };
-  }
-
-  pickUp(player, index) {
-    if (player === this.state.turn) {
-      if (index === this.state.indexOfCard) {
-        this.setState({
-          cardInHand: false,
-          indexOfCard: null
-        });
-      } else {
-        this.setState({
-          cardInHand: true,
-          indexOfCard: index
-        });
+const defaultState = {
+  1: {
+    deck: [{
+      name: "Tonberry",
+      rarity: 1,
+      tribe: null,
+      stats: {
+        north: 2,
+        east: 2,
+        south: 7,
+        west: 2
+      }
+    }, {
+      name: "Namazu",
+      rarity: 1,
+      tribe: "Beastman",
+      stats: {
+        north: 1,
+        east: 6,
+        south: 1,
+        west: 5
+      }
+    }, {
+      name: "Adamantoise",
+      rarity: 2,
+      tribe: null,
+      stats: {
+        north: 5,
+        east: 7,
+        south: 4,
+        west: 4
+      }
+    }, {
+      name: "Ultros & Typhon",
+      rarity: 2,
+      tribe: null,
+      stats: {
+        north: 2,
+        east: 3,
+        south: 6,
+        west: 7
+      }
+    }, {
+      name: "Garuda",
+      rarity: 3,
+      tribe: "Primal",
+      stats: {
+        north: 7,
+        east: 6,
+        south: 1,
+        west: 7
+      }
+    }]
+  },
+  2: {
+    deck: [{
+      name: "Chocobo",
+      rarity: 1,
+      tribe: null,
+      stats: {
+        north: 3,
+        east: 7,
+        south: 2,
+        west: 1
+      }
+    }, {
+      name: "Moogle",
+      rarity: 1,
+      tribe: "Beastman",
+      stats: {
+        north: 2,
+        east: 1,
+        south: 3,
+        west: 7
+      }
+    }, {
+      name: "Delivery Moogle",
+      rarity: 2,
+      tribe: "Beastman",
+      stats: {
+        north: 5,
+        east: 5,
+        south: 6,
+        west: 3
+      }
+    }, {
+      name: "Moglin",
+      rarity: 3,
+      tribe: "Beastman",
+      stats: {
+        north: 8,
+        east: 5,
+        south: 4,
+        west: 5
+      }
+    }, {
+      name: "Good King Moggle Mog XII",
+      rarity: 3,
+      tribe: "Primal",
+      stats: {
+        north: 7,
+        east: 6,
+        south: 7,
+        west: 1
+      }
+    }]
+  },
+  board: Array(9).fill({
+    player: null,
+    card: {
+      name: null,
+      rarity: null,
+      tribe: null,
+      stats: {
+        north: null,
+        east: null,
+        south: null,
+        west: null
       }
     }
-  }
+  }),
+  turn: 1,
+  cardInHand: false,
+  indexOfCard: null
+};
 
-  render() {
-    return __jsx("div", {
-      style: flex,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 119
-      },
-      __self: this
-    }, __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      player: 1,
-      deck: this.state.player1.deck,
-      onClick: this.pickUp,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 120
-      },
-      __self: this
-    }), __jsx(_board__WEBPACK_IMPORTED_MODULE_1__["default"], {
-      board: this.state.board,
-      turn: this.state.turn,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 121
-      },
-      __self: this
-    }), __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
-      player: 2,
-      deck: this.state.player2.deck,
-      onClick: this.pickUp,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 122
-      },
-      __self: this
-    }), `${this.state.cardInHand}`, `${this.state.indexOfCard}`);
-  }
-
-}
+const Game = () => {
+  const {
+    0: state,
+    1: updateState
+  } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(defaultState);
+  const onPickUp = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])((player, index) => {
+    if (player === state.turn) {
+      if (index === state.indexOfCard) {
+        updateState(_objectSpread({}, state, {
+          cardInHand: false,
+          indexOfCard: null
+        }));
+      } else {
+        updateState(_objectSpread({}, state, {
+          cardInHand: true,
+          indexOfCard: index
+        }));
+      }
+    }
+  }, [state]);
+  const onPutDown = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(index => {
+    if (state.cardInHand) {
+      const player = state.turn;
+      const newBoard = [...state.board.slice(0, index), {
+        player: player,
+        card: state[player].deck[state.indexOfCard]
+      }, ...state.board.slice(index + 1)];
+      updateState(_objectSpread({}, state, {
+        board: newBoard,
+        cardInHand: false,
+        indexOfCard: null,
+        turn: state.turn % 2 + 1
+      }));
+    }
+  }, [state]);
+  return __jsx("div", {
+    style: flex,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 142
+    },
+    __self: undefined
+  }, __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    player: 1,
+    deck: state[1].deck,
+    onClick: onPickUp,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 143
+    },
+    __self: undefined
+  }), __jsx(_board__WEBPACK_IMPORTED_MODULE_1__["default"], {
+    board: state.board,
+    turn: state.turn,
+    onClick: onPutDown,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 145
+    },
+    __self: undefined
+  }), __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    player: 2,
+    deck: state[2].deck,
+    onClick: onPickUp,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 147
+    },
+    __self: undefined
+  }), `${state.cardInHand}`, `${state.indexOfCard}`, `${state.turn}`);
+};
 
 /* harmony default export */ __webpack_exports__["default"] = (Game);
 

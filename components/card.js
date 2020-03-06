@@ -44,7 +44,7 @@ const inactive = {
 }
 
 const Card = (props) => (
-  <div className="card" style={ props.player === 1 ? player1 : props.player === 2 ? player2 : inactive }>
+  <div disabled={ props.played === true } style={ props.player === 1 ? player1 : props.player === 2 ? player2 : inactive }>
     <span style={ northStyle }>{ props.stats.north }</span>
     <span style={ eastStyle }>{ props.stats.east }</span>
     <span style={ southStyle }>{ props.stats.south }</span>
@@ -53,3 +53,18 @@ const Card = (props) => (
 );
 
 export default Card;
+
+// <div ng-class="{disabled: $ctrl.disabled}"></div>
+
+// <div className={props.played === true ? "disabled" : ""}></div>
+
+/*
+
+<div className={classnames(
+{
+  'disabled': props.played === true,
+  'veryCool': props.cool === true,
+}
+)}></div>
+
+*/
