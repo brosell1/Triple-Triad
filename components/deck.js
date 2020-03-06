@@ -17,9 +17,13 @@ const deckList = Array(5).fill(null)
 const Deck = (props) => (
   <div style={ deckStyle }>
     <h1 style={headerStyle}>Player {props.player}</h1>
-    {deckList.map((item, index) => (
+    {props.deck.map((item, index) => (
       <Panel key={ index }>
-        <Card north='1' east='5' south='3' west='6' player={ props.player }/>
+        <Card north={ item.stats.north }
+              east={ item.stats.east }
+              south={ item.stats.south }
+              west={ item.stats.west }
+              player={ props.player }/>
       </Panel>
     ))}
   </div>
