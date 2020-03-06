@@ -12,18 +12,12 @@ const headerStyle = {
   lineHeight: '37px',
 }
 
-const deckList = Array(5).fill(null)
-
 const Deck = (props) => (
   <div style={ deckStyle }>
-    <h1 style={headerStyle}>Player {props.player}</h1>
-    {props.deck.map((item, index) => (
-      <Panel key={ index }>
-        <Card north={ item.stats.north }
-              east={ item.stats.east }
-              south={ item.stats.south }
-              west={ item.stats.west }
-              player={ props.player }/>
+    <h1 style={ headerStyle }>Player { props.player }</h1>
+    { props.deck.map((item, index) => (
+      <Panel onClick={(player, index) => props.onClick(player, index)} key={ index }>
+        <Card stats={ item.stats } player={ props.player }/>
       </Panel>
     ))}
   </div>

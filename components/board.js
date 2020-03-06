@@ -1,13 +1,17 @@
 import Panel from './panel';
+import Card from './card';
 
-const panels = Array(9).fill(null)
 const boardStyle = {
   width: 156
 }
 
-const Board = () => (
+const Board = (props) => (
   <div style={ boardStyle }>
-    {panels.map((item, index) => <Panel index={ index } key={ index }></Panel>)}
+    {props.board.map((item, index) => (
+      <Panel index={ index } key={ index }>
+        <Card stats={ item.card.stats } player={ item.player }/>
+      </Panel>
+    ))}
   </div>
 );
 

@@ -1,14 +1,13 @@
 const northStyle = {
   position: 'absolute',
-  top: 5,
+  bottom: 35,
   left: '50%',
   transform: 'translateX(-50%)',
 }
 
 const eastStyle = {
   position: 'absolute',
-  top: '50%',
-  transform: 'translateY(-50%)',
+  bottom: 20,
   right: 5,
 }
 
@@ -21,32 +20,35 @@ const southStyle = {
 
 const westStyle = {
   position: 'absolute',
-  top: '50%',
-  transform: 'translateY(-50%)',
+  bottom: 20,
   left: 5,
 }
 
 
 const player1 = {
   backgroundColor: '#acbefb',
-    position: 'relative',
-    height: '100%',
-    width: '100%',
+  position: 'relative',
+  height: '100%',
+  width: '100%',
 }
 
 const player2 = {
   backgroundColor: '#ffcccb',
-    position: 'relative',
-    height: '100%',
-    width: '100%',
+  position: 'relative',
+  height: '100%',
+  width: '100%',
+}
+
+const inactive = {
+  display: 'none',
 }
 
 const Card = (props) => (
-  <div style={ props.player === 1 ? player1 : player2 }>
-    <span style={ northStyle }>{ props.north }</span>
-    <span style={ eastStyle }>{ props.east }</span>
-    <span style={ southStyle }>{ props.south }</span>
-    <span style={ westStyle }>{ props.west }</span>
+  <div className="card" style={ props.player === 1 ? player1 : props.player === 2 ? player2 : inactive }>
+    <span style={ northStyle }>{ props.stats.north }</span>
+    <span style={ eastStyle }>{ props.stats.east }</span>
+    <span style={ southStyle }>{ props.stats.south }</span>
+    <span style={ westStyle }>{ props.stats.west }</span>
   </div>
 );
 

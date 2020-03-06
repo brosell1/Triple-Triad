@@ -83,15 +83,45 @@ class Game extends React.Component {
           },
         ],
       },
+      board: Array(9).fill({
+        player: null,
+        card: {
+          name: null,
+          rarity: null,
+          tribe: null,
+          stats: { north: null, east: null, south: null, west: null },
+        }
+      }),
+      turn: 1,
+      cardInHand: false,
+      indexOfCard: null,
+    };
+  };
+
+  pickUp(player, index) {
+    if (player === this.state.turn) {
+      if (index === this.state.indexOfCard) {
+        this.setState({
+          cardInHand: false,
+          indexOfCard: null,
+        });
+      } else {
+        this.setState({
+          cardInHand: true,
+          indexOfCard: index,
+        });
+      }
     }
   };
 
   render() {
     return (
       <div style={ flex }>
-        <Deck player={1} deck={ this.state.player1.deck } />
-        <Board />
-        <Deck player={2} deck={ this.state.player2.deck } />
+        <Deck player={ 1 } deck={ this.state.player1.deck } onClick={this.pickUp} />
+        <Board board={ this.state.board } turn={ this.state.turn } />
+        <Deck player={ 2 } deck={ this.state.player2.deck } onClick={this.pickUp} />
+        {`${this.state.cardInHand}`}
+        {`${this.state.indexOfCard}`}
       </div>
     )
   }
