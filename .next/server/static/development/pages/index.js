@@ -159,78 +159,91 @@ __webpack_require__.r(__webpack_exports__);
 var _jsxFileName = "/home/benr@packtpub.net/Documents/triple-triad/components/card.js";
 
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
-const northStyle = {
-  position: 'absolute',
-  bottom: 35,
-  left: '50%',
-  transform: 'translateX(-50%)'
-};
-const eastStyle = {
-  position: 'absolute',
-  bottom: 20,
-  right: 5
-};
-const southStyle = {
-  position: 'absolute',
-  bottom: 5,
-  left: '50%',
-  transform: 'translateX(-50%)'
-};
-const westStyle = {
-  position: 'absolute',
-  bottom: 20,
-  left: 5
-};
-const player1 = {
-  backgroundColor: '#acbefb',
-  position: 'relative',
-  height: '100%',
-  width: '100%'
-};
-const player2 = {
-  backgroundColor: '#ffcccb',
-  position: 'relative',
-  height: '100%',
-  width: '100%'
-};
-const inactive = {
-  display: 'none'
-};
+
+// const northStyle = {
+//   position: 'absolute',
+//   bottom: 35,
+//   left: '50%',
+//   transform: 'translateX(-50%)',
+// }
+//
+// const eastStyle = {
+//   position: 'absolute',
+//   bottom: 20,
+//   right: 5,
+// }
+//
+// const southStyle = {
+//   position: 'absolute',
+//   bottom: 5,
+//   left: '50%',
+//   transform: 'translateX(-50%)',
+// }
+//
+// const westStyle = {
+//   position: 'absolute',
+//   bottom: 20,
+//   left: 5,
+// }
+//
+//
+// const player1 = {
+//   backgroundColor: '#acbefb',
+//   position: 'relative',
+//   height: '100%',
+//   width: '100%',
+// }
+//
+// const player2 = {
+//   backgroundColor: '#ffcccb',
+//   position: 'relative',
+//   height: '100%',
+//   width: '100%',
+// }
+//
+// const inactive = {
+//   display: 'none',
+// }
+//
+const classNames = __webpack_require__(/*! classnames */ "classnames");
 
 const Card = props => __jsx("div", {
-  disabled: props.played === true,
-  style: props.player === 1 ? player1 : props.player === 2 ? player2 : inactive,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 47
-  },
-  __self: undefined
-}, __jsx("span", {
-  style: northStyle,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 48
-  },
-  __self: undefined
-}, props.stats.north), __jsx("span", {
-  style: eastStyle,
+  className: classNames({
+    card: true,
+    [`player-${props.player}`]: true,
+    inactive: props.played
+  }),
   __source: {
     fileName: _jsxFileName,
     lineNumber: 49
   },
   __self: undefined
-}, props.stats.east), __jsx("span", {
-  style: southStyle,
+}, __jsx("span", {
+  className: "north",
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 50
+    lineNumber: 54
+  },
+  __self: undefined
+}, props.stats.north), __jsx("span", {
+  className: "east",
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 55
+  },
+  __self: undefined
+}, props.stats.east), __jsx("span", {
+  className: "south",
+  __source: {
+    fileName: _jsxFileName,
+    lineNumber: 56
   },
   __self: undefined
 }, props.stats.south), __jsx("span", {
-  style: westStyle,
+  className: "west",
   __source: {
     fileName: _jsxFileName,
-    lineNumber: 51
+    lineNumber: 57
   },
   __self: undefined
 }, props.stats.west));
@@ -304,6 +317,7 @@ const Deck = props => __jsx("div", {
 }, __jsx(_card__WEBPACK_IMPORTED_MODULE_2__["default"], {
   stats: item.stats,
   player: props.player,
+  played: item.played,
   __source: {
     fileName: _jsxFileName,
     lineNumber: 20
@@ -476,7 +490,7 @@ const Game = () => {
   } = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(defaultState);
   const onPickUp = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])((player, index) => {
     if (player === state.turn) {
-      if (index === state.indexOfCard) {
+      if (index === state.indexOfCard || state[player].deck[index].played) {
         updateState(_objectSpread({}, state, {
           cardInHand: false,
           indexOfCard: null
@@ -490,15 +504,26 @@ const Game = () => {
     }
   }, [state]);
   const onPutDown = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(index => {
-    console.log(state.board[index].player);
-
     if (state.cardInHand && !state.board[index].player) {
       const player = state.turn;
+      const hand = state[player].deck;
+
+      const cardToRemove = _objectSpread({}, hand[state.indexOfCard], {
+        played: true
+      });
+
       const newBoard = [...state.board.slice(0, index), {
         player: player,
-        card: state[player].deck[state.indexOfCard]
+        card: hand[state.indexOfCard]
       }, ...state.board.slice(index + 1)];
+      const newHand = {
+        deck: [...hand.slice(0, state.indexOfCard), cardToRemove, ...hand.slice(state.indexOfCard + 1)]
+      };
+      const new1 = state.turn === 1 ? newHand : state[1];
+      const new2 = state.turn === 2 ? newHand : state[2];
       updateState(_objectSpread({}, state, {
+        1: new1,
+        2: new2,
         board: newBoard,
         cardInHand: false,
         indexOfCard: null,
@@ -510,7 +535,7 @@ const Game = () => {
     style: flex,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 143
+      lineNumber: 157
     },
     __self: undefined
   }, __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -519,7 +544,7 @@ const Game = () => {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 144
+      lineNumber: 158
     },
     __self: undefined
   }), __jsx(_board__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -528,7 +553,7 @@ const Game = () => {
     onClick: onPutDown,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 146
+      lineNumber: 160
     },
     __self: undefined
   }), __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -537,7 +562,7 @@ const Game = () => {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 148
+      lineNumber: 162
     },
     __self: undefined
   }), `${state.cardInHand}`, `${state.indexOfCard}`, `${state.turn}`);
@@ -2424,6 +2449,17 @@ function Index() {
 
 module.exports = __webpack_require__(/*! /home/benr@packtpub.net/Documents/triple-triad/pages/index.js */"./pages/index.js");
 
+
+/***/ }),
+
+/***/ "classnames":
+/*!*****************************!*\
+  !*** external "classnames" ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("classnames");
 
 /***/ }),
 

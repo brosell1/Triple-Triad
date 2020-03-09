@@ -67,84 +67,99 @@ var Board = function Board(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/defineProperty */ "./node_modules/@babel/runtime-corejs2/helpers/esm/defineProperty.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+
 var _jsxFileName = "/home/benr@packtpub.net/Documents/triple-triad/components/card.js";
 
-var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
-var northStyle = {
-  position: 'absolute',
-  bottom: 35,
-  left: '50%',
-  transform: 'translateX(-50%)'
-};
-var eastStyle = {
-  position: 'absolute',
-  bottom: 20,
-  right: 5
-};
-var southStyle = {
-  position: 'absolute',
-  bottom: 5,
-  left: '50%',
-  transform: 'translateX(-50%)'
-};
-var westStyle = {
-  position: 'absolute',
-  bottom: 20,
-  left: 5
-};
-var player1 = {
-  backgroundColor: '#acbefb',
-  position: 'relative',
-  height: '100%',
-  width: '100%'
-};
-var player2 = {
-  backgroundColor: '#ffcccb',
-  position: 'relative',
-  height: '100%',
-  width: '100%'
-};
-var inactive = {
-  display: 'none'
-};
+var __jsx = react__WEBPACK_IMPORTED_MODULE_1___default.a.createElement;
+
+// const northStyle = {
+//   position: 'absolute',
+//   bottom: 35,
+//   left: '50%',
+//   transform: 'translateX(-50%)',
+// }
+//
+// const eastStyle = {
+//   position: 'absolute',
+//   bottom: 20,
+//   right: 5,
+// }
+//
+// const southStyle = {
+//   position: 'absolute',
+//   bottom: 5,
+//   left: '50%',
+//   transform: 'translateX(-50%)',
+// }
+//
+// const westStyle = {
+//   position: 'absolute',
+//   bottom: 20,
+//   left: 5,
+// }
+//
+//
+// const player1 = {
+//   backgroundColor: '#acbefb',
+//   position: 'relative',
+//   height: '100%',
+//   width: '100%',
+// }
+//
+// const player2 = {
+//   backgroundColor: '#ffcccb',
+//   position: 'relative',
+//   height: '100%',
+//   width: '100%',
+// }
+//
+// const inactive = {
+//   display: 'none',
+// }
+//
+var classNames = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
 
 var Card = function Card(props) {
+  var _classNames;
+
   return __jsx("div", {
-    disabled: props.played === true,
-    style: props.player === 1 ? player1 : props.player === 2 ? player2 : inactive,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 47
-    },
-    __self: this
-  }, __jsx("span", {
-    style: northStyle,
-    __source: {
-      fileName: _jsxFileName,
-      lineNumber: 48
-    },
-    __self: this
-  }, props.stats.north), __jsx("span", {
-    style: eastStyle,
+    className: classNames((_classNames = {
+      card: true
+    }, Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(_classNames, "player-".concat(props.player), true), Object(_babel_runtime_corejs2_helpers_esm_defineProperty__WEBPACK_IMPORTED_MODULE_0__["default"])(_classNames, "inactive", props.played), _classNames)),
     __source: {
       fileName: _jsxFileName,
       lineNumber: 49
     },
     __self: this
-  }, props.stats.east), __jsx("span", {
-    style: southStyle,
+  }, __jsx("span", {
+    className: "north",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 50
+      lineNumber: 54
+    },
+    __self: this
+  }, props.stats.north), __jsx("span", {
+    className: "east",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 55
+    },
+    __self: this
+  }, props.stats.east), __jsx("span", {
+    className: "south",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 56
     },
     __self: this
   }, props.stats.south), __jsx("span", {
-    style: westStyle,
+    className: "west",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 51
+      lineNumber: 57
     },
     __self: this
   }, props.stats.west));
@@ -223,6 +238,7 @@ var Deck = function Deck(props) {
     }, __jsx(_card__WEBPACK_IMPORTED_MODULE_2__["default"], {
       stats: item.stats,
       player: props.player,
+      played: item.played,
       __source: {
         fileName: _jsxFileName,
         lineNumber: 20
@@ -417,7 +433,7 @@ var Game = function Game() {
 
   var onPickUp = Object(react__WEBPACK_IMPORTED_MODULE_8__["useCallback"])(function (player, index) {
     if (player === state.turn) {
-      if (index === state.indexOfCard) {
+      if (index === state.indexOfCard || state[player].deck[index].played) {
         updateState(_objectSpread({}, state, {
           cardInHand: false,
           indexOfCard: null
@@ -431,15 +447,26 @@ var Game = function Game() {
     }
   }, [state]);
   var onPutDown = Object(react__WEBPACK_IMPORTED_MODULE_8__["useCallback"])(function (index) {
-    console.log(state.board[index].player);
-
     if (state.cardInHand && !state.board[index].player) {
       var player = state.turn;
+      var hand = state[player].deck;
+
+      var cardToRemove = _objectSpread({}, hand[state.indexOfCard], {
+        played: true
+      });
+
       var newBoard = [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(state.board.slice(0, index)), [{
         player: player,
-        card: state[player].deck[state.indexOfCard]
+        card: hand[state.indexOfCard]
       }], Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(state.board.slice(index + 1)));
+      var newHand = {
+        deck: [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(hand.slice(0, state.indexOfCard)), [cardToRemove], Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(hand.slice(state.indexOfCard + 1)))
+      };
+      var new1 = state.turn === 1 ? newHand : state[1];
+      var new2 = state.turn === 2 ? newHand : state[2];
       updateState(_objectSpread({}, state, {
+        1: new1,
+        2: new2,
         board: newBoard,
         cardInHand: false,
         indexOfCard: null,
@@ -451,7 +478,7 @@ var Game = function Game() {
     style: flex,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 143
+      lineNumber: 157
     },
     __self: this
   }, __jsx(_deck__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -460,7 +487,7 @@ var Game = function Game() {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 144
+      lineNumber: 158
     },
     __self: this
   }), __jsx(_board__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -469,7 +496,7 @@ var Game = function Game() {
     onClick: onPutDown,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 146
+      lineNumber: 160
     },
     __self: this
   }), __jsx(_deck__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -478,7 +505,7 @@ var Game = function Game() {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 148
+      lineNumber: 162
     },
     __self: this
   }), "".concat(state.cardInHand), "".concat(state.indexOfCard), "".concat(state.turn));
@@ -1380,6 +1407,68 @@ module.exports = _typeof;
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(/*! regenerator-runtime */ "./node_modules/regenerator-runtime/runtime.js");
+
+
+/***/ }),
+
+/***/ "./node_modules/classnames/index.js":
+/*!******************************************!*\
+  !*** ./node_modules/classnames/index.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+  Copyright (c) 2017 Jed Watson.
+  Licensed under the MIT License (MIT), see
+  http://jedwatson.github.io/classnames
+*/
+/* global define */
+
+(function () {
+	'use strict';
+
+	var hasOwn = {}.hasOwnProperty;
+
+	function classNames () {
+		var classes = [];
+
+		for (var i = 0; i < arguments.length; i++) {
+			var arg = arguments[i];
+			if (!arg) continue;
+
+			var argType = typeof arg;
+
+			if (argType === 'string' || argType === 'number') {
+				classes.push(arg);
+			} else if (Array.isArray(arg) && arg.length) {
+				var inner = classNames.apply(null, arg);
+				if (inner) {
+					classes.push(inner);
+				}
+			} else if (argType === 'object') {
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
+				}
+			}
+		}
+
+		return classes.join(' ');
+	}
+
+	if ( true && module.exports) {
+		classNames.default = classNames;
+		module.exports = classNames;
+	} else if (true) {
+		// register as 'classnames', consistent with npm package name
+		!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = (function () {
+			return classNames;
+		}).apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	} else {}
+}());
 
 
 /***/ }),

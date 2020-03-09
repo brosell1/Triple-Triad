@@ -96,7 +96,7 @@ const Game = () => {
   const onPickUp = useCallback(
     (player, index) => {
       if (player === state.turn) {
-        if (index === state.indexOfCard) {
+        if (index === state.indexOfCard || state[player].deck[index].played) {
           updateState({
             ...state,
             cardInHand: false,
@@ -110,26 +110,40 @@ const Game = () => {
           });
         }
       }
-    },
-    [state]
+    }, [state]
   );
 
   const onPutDown = useCallback(
     (index) => {
-      console.log(state.board[index].player);
       if (state.cardInHand && !state.board[index].player) {
         const player = state.turn;
+        const hand = state[player].deck;
+        const cardToRemove = {
+          ...hand[state.indexOfCard],
+          played: true
+        };
         const newBoard = [
           ...state.board.slice(0, index),
           {
             player: player,
-            card: state[player].deck[state.indexOfCard]
+            card: hand[state.indexOfCard]
           },
           ...state.board.slice(index + 1)
         ];
+        const newHand = {
+          deck: [
+            ...hand.slice(0, state.indexOfCard),
+            cardToRemove,
+            ...hand.slice(state.indexOfCard + 1)
+          ]
+        };
+        const new1 = state.turn === 1 ? newHand : state[1];
+        const new2 = state.turn === 2 ? newHand : state[2];
 
         updateState({
           ...state,
+          1: new1,
+          2: new2,
           board: newBoard,
           cardInHand: false,
           indexOfCard: null,

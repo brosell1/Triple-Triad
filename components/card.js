@@ -1,54 +1,60 @@
-const northStyle = {
-  position: 'absolute',
-  bottom: 35,
-  left: '50%',
-  transform: 'translateX(-50%)',
-}
-
-const eastStyle = {
-  position: 'absolute',
-  bottom: 20,
-  right: 5,
-}
-
-const southStyle = {
-  position: 'absolute',
-  bottom: 5,
-  left: '50%',
-  transform: 'translateX(-50%)',
-}
-
-const westStyle = {
-  position: 'absolute',
-  bottom: 20,
-  left: 5,
-}
-
-
-const player1 = {
-  backgroundColor: '#acbefb',
-  position: 'relative',
-  height: '100%',
-  width: '100%',
-}
-
-const player2 = {
-  backgroundColor: '#ffcccb',
-  position: 'relative',
-  height: '100%',
-  width: '100%',
-}
-
-const inactive = {
-  display: 'none',
-}
+// const northStyle = {
+//   position: 'absolute',
+//   bottom: 35,
+//   left: '50%',
+//   transform: 'translateX(-50%)',
+// }
+//
+// const eastStyle = {
+//   position: 'absolute',
+//   bottom: 20,
+//   right: 5,
+// }
+//
+// const southStyle = {
+//   position: 'absolute',
+//   bottom: 5,
+//   left: '50%',
+//   transform: 'translateX(-50%)',
+// }
+//
+// const westStyle = {
+//   position: 'absolute',
+//   bottom: 20,
+//   left: 5,
+// }
+//
+//
+// const player1 = {
+//   backgroundColor: '#acbefb',
+//   position: 'relative',
+//   height: '100%',
+//   width: '100%',
+// }
+//
+// const player2 = {
+//   backgroundColor: '#ffcccb',
+//   position: 'relative',
+//   height: '100%',
+//   width: '100%',
+// }
+//
+// const inactive = {
+//   display: 'none',
+// }
+//
+const classNames = require('classnames');
 
 const Card = (props) => (
-  <div disabled={ props.played === true } style={ props.player === 1 ? player1 : props.player === 2 ? player2 : inactive }>
-    <span style={ northStyle }>{ props.stats.north }</span>
-    <span style={ eastStyle }>{ props.stats.east }</span>
-    <span style={ southStyle }>{ props.stats.south }</span>
-    <span style={ westStyle }>{ props.stats.west }</span>
+  <div className={classNames({
+    card: true,
+    [`player-${props.player}`]: true,
+    inactive: props.played
+  })}>
+    <span className='north' >{ props.stats.north }</span>
+    <span className='east' >{ props.stats.east }</span>
+    <span className='south' >{ props.stats.south }</span>
+    <span className='west' >{ props.stats.west }</span>
   </div>
 );
 
