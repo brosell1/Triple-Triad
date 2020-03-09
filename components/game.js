@@ -82,13 +82,25 @@ const defaultState = {
       name: null,
       rarity: null,
       tribe: null,
-      stats: { north: null, east: null, south: null, west: null }
+      stats: { north: undefined, east: undefined, south: undefined, west: undefined }
     }
   }),
   turn: 1,
   cardInHand: false,
   indexOfCard: null
 };
+
+const neighbors = [
+  { east: 1, south: 3 },
+  { east: 2, south: 4, west: 0 },
+  { south: 5, west: 1 },
+  { north: 0, east: 4, south: 6 },
+  { north: 1, east: 5, south: 7, west: 3 },
+  { north: 2, south: 8, west: 4 },
+  { north: 3, east: 7 },
+  { north: 4, east: 8, west: 6 },
+  { north: 5, west: 7 },
+]
 
 const Game = () => {
   const [state, updateState] = useState(defaultState);
@@ -144,7 +156,7 @@ const Game = () => {
           ...state,
           1: new1,
           2: new2,
-          board: newBoard,
+          board: checkNeighbors(index, newBoard),
           cardInHand: false,
           indexOfCard: null,
           turn: (state.turn % 2) + 1
@@ -153,8 +165,41 @@ const Game = () => {
     }, [state]
   );
 
+  const checkNeighbors = (index, newBoard) => {
+    const { north, east, south, west } = neighbors[index];
+    let flipNorth, flipEast, flipSouth, flipWest;
+    if (north && newBoard[north].player !== state.turn) {
+      flipNorth = newBoard[north].card.stats.south < newBoard[index].card.stats.north ? true : false
+    }
+    if (east && newBoard[east].player !== state.turn) {
+      flipEast = newBoard[east].card.stats.west < newBoard[index].card.stats.east ? true : false
+    }
+    if (south && newBoard[south].player !== state.turn) {
+      flipSouth = newBoard[south].card.stats.north < newBoard[index].card.stats.south ? true : false
+    }
+    if (west && newBoard[west].player !== state.turn) {
+      flipWest = newBoard[west].card.stats.east < newBoard[index].card.stats.west ? true : false
+    }
+
+    const updatedBoard = newBoard.slice();
+
+    if (flipNorth) {
+      updatedBoard[north].player = state.turn === 1 ? 1 : 2;
+    }
+    if (flipEast) {
+      updatedBoard[east].player = state.turn === 1 ? 1 : 2;
+    }
+    if (flipSouth) {
+      updatedBoard[south].player = state.turn === 1 ? 1 : 2;
+    }
+    if (flipWest) {
+      updatedBoard[west].player = state.turn === 1 ? 1 : 2;
+    }
+    return updatedBoard;
+  };
+
   return (
-    <div style={flex}>
+    <div className='game'>
       <Deck player={1} deck={state[1].deck} onClick={onPickUp} />
 
       <Board board={state.board} turn={state.turn} onClick={onPutDown}/>

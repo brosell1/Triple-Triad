@@ -7,7 +7,7 @@ const panelStyle = {
 }
 
 const Panel = (props) => (
-  <button onClick={ props.onClick } style={ panelStyle }>
+  <button onClick={ props.onClick } className='panel'>
     { props.children }
   </button>
 );

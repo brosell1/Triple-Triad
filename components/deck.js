@@ -13,8 +13,8 @@ const headerStyle = {
 }
 
 const Deck = (props) => (
-  <div style={ deckStyle }>
-    <h1 style={ headerStyle }>Player { props.player }</h1>
+  <div className='deck'>
+    <h1 className='deck__title'>Player { props.player }</h1>
     { props.deck.map((item, index) => (
       <Panel onClick={() => props.onClick(props.player, index)} key={ index }>
         <Card stats={ item.stats } player={ props.player } played={ item.played }/>

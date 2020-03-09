@@ -1,0 +1,10 @@
+.deck {
+  width: 156px;
+  text-align: center;
+  line-height: 0;
+  margin: 0 20px;
+}
+
+.deck__title {
+  line-height: 37px;
+}
