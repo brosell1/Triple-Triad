@@ -431,7 +431,9 @@ var Game = function Game() {
     }
   }, [state]);
   var onPutDown = Object(react__WEBPACK_IMPORTED_MODULE_8__["useCallback"])(function (index) {
-    if (state.cardInHand) {
+    console.log(state.board[index].player);
+
+    if (state.cardInHand && !state.board[index].player) {
       var player = state.turn;
       var newBoard = [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(state.board.slice(0, index)), [{
         player: player,
@@ -449,7 +451,7 @@ var Game = function Game() {
     style: flex,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 142
+      lineNumber: 143
     },
     __self: this
   }, __jsx(_deck__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -458,7 +460,7 @@ var Game = function Game() {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 143
+      lineNumber: 144
     },
     __self: this
   }), __jsx(_board__WEBPACK_IMPORTED_MODULE_9__["default"], {
@@ -467,7 +469,7 @@ var Game = function Game() {
     onClick: onPutDown,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 145
+      lineNumber: 146
     },
     __self: this
   }), __jsx(_deck__WEBPACK_IMPORTED_MODULE_10__["default"], {
@@ -476,7 +478,7 @@ var Game = function Game() {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 147
+      lineNumber: 148
     },
     __self: this
   }), "".concat(state.cardInHand), "".concat(state.indexOfCard), "".concat(state.turn));

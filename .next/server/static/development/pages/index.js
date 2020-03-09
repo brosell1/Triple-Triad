@@ -490,7 +490,9 @@ const Game = () => {
     }
   }, [state]);
   const onPutDown = Object(react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(index => {
-    if (state.cardInHand) {
+    console.log(state.board[index].player);
+
+    if (state.cardInHand && !state.board[index].player) {
       const player = state.turn;
       const newBoard = [...state.board.slice(0, index), {
         player: player,
@@ -508,7 +510,7 @@ const Game = () => {
     style: flex,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 142
+      lineNumber: 143
     },
     __self: undefined
   }, __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -517,7 +519,7 @@ const Game = () => {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 143
+      lineNumber: 144
     },
     __self: undefined
   }), __jsx(_board__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -526,7 +528,7 @@ const Game = () => {
     onClick: onPutDown,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 145
+      lineNumber: 146
     },
     __self: undefined
   }), __jsx(_deck__WEBPACK_IMPORTED_MODULE_2__["default"], {
@@ -535,7 +537,7 @@ const Game = () => {
     onClick: onPickUp,
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 147
+      lineNumber: 148
     },
     __self: undefined
   }), `${state.cardInHand}`, `${state.indexOfCard}`, `${state.turn}`);

@@ -195,7 +195,7 @@ var Game = function Game() {
     }
   }, [state]);
   var onPutDown = Object(react__WEBPACK_IMPORTED_MODULE_8__["useCallback"])(function (index) {
-    if (state.cardInHand) {
+    if (state.cardInHand && !state.board[index].name) {
       var player = state.turn;
       var newBoard = [].concat(Object(_babel_runtime_corejs2_helpers_esm_toConsumableArray__WEBPACK_IMPORTED_MODULE_6__["default"])(state.board.slice(0, index)), [{
         player: player,
@@ -251,4 +251,4 @@ var Game = function Game() {
 /***/ })
 
 })
-//# sourceMappingURL=index.js.f46795d3107005024d8e.hot-update.js.map
+//# sourceMappingURL=index.js.8c979d84e5942894e092.hot-update.js.map

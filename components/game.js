@@ -116,7 +116,8 @@ const Game = () => {
 
   const onPutDown = useCallback(
     (index) => {
-      if (state.cardInHand) {
+      console.log(state.board[index].player);
+      if (state.cardInHand && !state.board[index].player) {
         const player = state.turn;
         const newBoard = [
           ...state.board.slice(0, index),
