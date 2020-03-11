@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import classNames from "classnames";
 
 import Board from "./board";
 import Deck from "./deck";
 
+const randomiseTurn = () => Math.round(Math.random()) + 1;
 const blankPanel = {
   card: {
     name: null,
@@ -101,23 +102,25 @@ const neighbors = [
 ]
 
 const Game = () => {
-  const [state, updateState] = useState(defaultState);
-  const randomiseTurn = Math.round(Math.random()) + 1;
+  const [state, setState] = useState(defaultState);
   useEffect(() => {
-
-  })
+    setState({
+      ...state,
+      turn: randomiseTurn()
+    })
+  }, [])
 
   const onPickUp = useCallback(
     (player, index) => {
       if (player === state.turn) {
         if (index === state.indexOfCard || state[player].deck[index].played) {
-          updateState({
+          setState({
             ...state,
             cardInHand: false,
             indexOfCard: null
           });
         } else {
-          updateState({
+          setState({
             ...state,
             cardInHand: true,
             indexOfCard: index
@@ -154,7 +157,7 @@ const Game = () => {
         const new1 = state.turn === 1 ? newHand : state[1];
         const new2 = state.turn === 2 ? newHand : state[2];
 
-        updateState({
+        setState({
           ...state,
           1: new1,
           2: new2,
@@ -167,36 +170,50 @@ const Game = () => {
     }, [state]
   );
 
+  const onRestart = useCallback(
+    () => {
+      const player1Refreshed = {
+        deck: state[1].deck.map(item => ({
+          ...item,
+          played: false
+        }))
+      };
+      const player2Refreshed = {
+        deck: state[2].deck.map(item => ({
+          ...item,
+          played: false
+        }))
+      };
+      const boardRefreshed = Array(9).fill(blankPanel);
+
+      setState({
+        ...state,
+        1: player1Refreshed,
+        2: player2Refreshed,
+        board: boardRefreshed,
+        turn: randomiseTurn()
+      })
+    }, [state]
+  )
+
   const checkNeighbors = (index, newBoard) => {
     const { north, east, south, west } = neighbors[index];
     let flipNorth, flipEast, flipSouth, flipWest;
-    if (north && newBoard[north].player !== state.turn) {
-      flipNorth = newBoard[north].card.stats.south < newBoard[index].card.stats.north ? true : false
-    }
-    if (east && newBoard[east].player !== state.turn) {
-      flipEast = newBoard[east].card.stats.west < newBoard[index].card.stats.east ? true : false
-    }
-    if (south && newBoard[south].player !== state.turn) {
-      flipSouth = newBoard[south].card.stats.north < newBoard[index].card.stats.south ? true : false
-    }
-    if (west && newBoard[west].player !== state.turn) {
-      flipWest = newBoard[west].card.stats.east < newBoard[index].card.stats.west ? true : false
-    }
+    if (north && newBoard[north].player !== state.turn)
+      flipNorth = newBoard[north].card.stats.south < newBoard[index].card.stats.north ? true : false;
+    if (east && newBoard[east].player !== state.turn)
+      flipEast = newBoard[east].card.stats.west < newBoard[index].card.stats.east ? true : false;
+    if (south && newBoard[south].player !== state.turn)
+      flipSouth = newBoard[south].card.stats.north < newBoard[index].card.stats.south ? true : false;
+    if (west && newBoard[west].player !== state.turn)
+      flipWest = newBoard[west].card.stats.east < newBoard[index].card.stats.west ? true : false;
 
     const updatedBoard = newBoard.slice();
 
-    if (flipNorth) {
-      updatedBoard[north].player = state.turn === 1 ? 1 : 2;
-    }
-    if (flipEast) {
-      updatedBoard[east].player = state.turn === 1 ? 1 : 2;
-    }
-    if (flipSouth) {
-      updatedBoard[south].player = state.turn === 1 ? 1 : 2;
-    }
-    if (flipWest) {
-      updatedBoard[west].player = state.turn === 1 ? 1 : 2;
-    }
+    if (flipNorth) updatedBoard[north].player = state.turn === 1 ? 1 : 2;
+    if (flipEast) updatedBoard[east].player = state.turn === 1 ? 1 : 2;
+    if (flipSouth) updatedBoard[south].player = state.turn === 1 ? 1 : 2;
+    if (flipWest) updatedBoard[west].player = state.turn === 1 ? 1 : 2;
     return updatedBoard;
   };
 
@@ -210,6 +227,7 @@ const Game = () => {
         <Board board={state.board} turn={state.turn} onClick={onPutDown}/>
         <Deck player={2} deck={state[2].deck} onClick={onPickUp} />
       </div>
+      <button onClick={onRestart}>Restart</button>
     </div>
   );
 };
