@@ -3,8 +3,14 @@ import React, { useState, useCallback } from "react";
 import Board from "./board";
 import Deck from "./deck";
 
-const flex = {
-  display: "flex"
+const blankPanel = {
+  player: null,
+  card: {
+    name: null,
+    rarity: null,
+    tribe: null,
+    stats: { north: undefined, east: undefined, south: undefined, west: undefined }
+  }
 };
 
 const defaultState = {
@@ -76,16 +82,8 @@ const defaultState = {
       }
     ]
   },
-  board: Array(9).fill({
-    player: null,
-    card: {
-      name: null,
-      rarity: null,
-      tribe: null,
-      stats: { north: undefined, east: undefined, south: undefined, west: undefined }
-    }
-  }),
-  turn: 1,
+  board: Array(9).fill(blankPanel),
+  turn: Math.round(Math.random()) + 1,
   cardInHand: false,
   indexOfCard: null
 };
