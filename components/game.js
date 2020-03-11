@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react";
+import classNames from "classnames";
 
 import Board from "./board";
 import Deck from "./deck";
 
 const blankPanel = {
-  player: null,
   card: {
     name: null,
     rarity: null,
@@ -83,7 +83,7 @@ const defaultState = {
     ]
   },
   board: Array(9).fill(blankPanel),
-  turn: Math.round(Math.random()) + 1,
+  turn: 1,
   cardInHand: false,
   indexOfCard: null
 };
@@ -102,6 +102,10 @@ const neighbors = [
 
 const Game = () => {
   const [state, updateState] = useState(defaultState);
+  const randomiseTurn = Math.round(Math.random()) + 1;
+  useEffect(() => {
+
+  })
 
   const onPickUp = useCallback(
     (player, index) => {
@@ -197,16 +201,15 @@ const Game = () => {
   };
 
   return (
-    <div className='game'>
-      <Deck player={1} deck={state[1].deck} onClick={onPickUp} />
-
-      <Board board={state.board} turn={state.turn} onClick={onPutDown}/>
-
-      <Deck player={2} deck={state[2].deck} onClick={onPickUp} />
-
-      {`${state.cardInHand}`}
-      {`${state.indexOfCard}`}
-      {`${state.turn}`}
+    <div>
+      <h1 className={
+        classNames({[`player-${state.turn}`]: true})
+      }>Player {state.turn}'s turn!</h1>
+      <div className='game'>
+        <Deck player={1} deck={state[1].deck} onClick={onPickUp} />
+        <Board board={state.board} turn={state.turn} onClick={onPutDown}/>
+        <Deck player={2} deck={state[2].deck} onClick={onPickUp} />
+      </div>
     </div>
   );
 };

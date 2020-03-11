@@ -14,18 +14,3 @@ const Card = (props) => (
 );
 
 export default Card;
-
-// <div ng-class="{disabled: $ctrl.disabled}"></div>
-
-// <div className={props.played === true ? "disabled" : ""}></div>
-
-/*
-
-<div className={classnames(
-{
-  'disabled': props.played === true,
-  'veryCool': props.cool === true,
-}
-)}></div>
-
-*/
