@@ -4,7 +4,8 @@ const Card = (props) => (
   <div className={classNames({
     card: true,
     inactive: props.played,
-    playable: props.playable
+    playable: props.playable,
+    selected: props.selected
   })}>
     <div className={classNames({
       card__overlay: true,

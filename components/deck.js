@@ -21,7 +21,8 @@ const Deck = (props) => (
           stats={ item.stats }
           player={ props.player }
           played={ item.played }
-          playable={ props.player === props.turn }/>
+          playable={ props.player === props.turn }
+          selected={ index === props.indexOfCard }/>
       </Panel>
     ))}
   </div>

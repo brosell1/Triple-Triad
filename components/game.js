@@ -238,12 +238,14 @@ const Game = () => {
         <Deck player={1}
           deck={ state[1].deck }
           onClick={ onPickUp }
-          turn={ state.turn }/>
+          turn={ state.turn }
+          indexOfCard={ state.indexOfCard }/>
         <Board board={state.board} turn={state.turn} onClick={onPutDown}/>
         <Deck player={2}
           deck={ state[2].deck }
           onClick={ onPickUp }
-          turn={ state.turn }/>
+          turn={ state.turn }
+          indexOfCard={ state.indexOfCard }/>
       </div>
       <button onClick={onRestart}>Restart</button>
       {state.indexOfCard}
