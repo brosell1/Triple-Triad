@@ -21,31 +21,36 @@ const defaultState = {
         name: "Tonberry",
         rarity: 1,
         tribe: null,
-        stats: { north: 2, east: 2, south: 7, west: 2 }
+        stats: { north: 2, east: 2, south: 7, west: 2 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/2.png"
       },
       {
         name: "Namazu",
         rarity: 1,
         tribe: "Beastman",
-        stats: { north: 1, east: 6, south: 1, west: 5 }
+        stats: { north: 1, east: 6, south: 1, west: 5 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/183.png"
       },
       {
         name: "Adamantoise",
         rarity: 2,
         tribe: null,
-        stats: { north: 5, east: 7, south: 4, west: 4 }
+        stats: { north: 5, east: 7, south: 4, west: 4 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/170.png"
       },
       {
         name: "Ultros & Typhon",
         rarity: 2,
         tribe: null,
-        stats: { north: 2, east: 3, south: 6, west: 7 }
+        stats: { north: 2, east: 3, south: 6, west: 7 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/22.png"
       },
       {
         name: "Garuda",
         rarity: 3,
         tribe: "Primal",
-        stats: { north: 7, east: 6, south: 1, west: 7 }
+        stats: { north: 7, east: 6, south: 1, west: 7 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/42.png"
       }
     ]
   },
@@ -55,31 +60,36 @@ const defaultState = {
         name: "Chocobo",
         rarity: 1,
         tribe: null,
-        stats: { north: 3, east: 7, south: 2, west: 1 }
+        stats: { north: 3, east: 7, south: 2, west: 1 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/13.png"
       },
       {
         name: "Moogle",
         rarity: 1,
         tribe: "Beastman",
-        stats: { north: 2, east: 1, south: 3, west: 7 }
+        stats: { north: 2, east: 1, south: 3, west: 7 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/20.png"
       },
       {
         name: "Delivery Moogle",
         rarity: 2,
         tribe: "Beastman",
-        stats: { north: 5, east: 5, south: 6, west: 3 }
+        stats: { north: 5, east: 5, south: 6, west: 3 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/159.png"
       },
       {
         name: "Moglin",
         rarity: 3,
         tribe: "Beastman",
-        stats: { north: 8, east: 5, south: 4, west: 5 }
+        stats: { north: 8, east: 5, south: 4, west: 5 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/115.png"
       },
       {
         name: "Good King Moggle Mog XII",
         rarity: 3,
         tribe: "Primal",
-        stats: { north: 7, east: 6, south: 7, west: 1 }
+        stats: { north: 7, east: 6, south: 7, west: 1 },
+        imageUrl: "https://triad.raelys.com/images/cards/large/43.png"
       }
     ]
   },
@@ -99,7 +109,7 @@ const neighbors = [
   { north: 3, east: 7 },
   { north: 4, east: 8, west: 6 },
   { north: 5, west: 7 },
-]
+];
 
 const Game = () => {
   const [state, setState] = useState(defaultState);
@@ -108,7 +118,7 @@ const Game = () => {
       ...state,
       turn: randomiseTurn()
     })
-  }, [])
+  }, []);
 
   const onPickUp = useCallback(
     (player, index) => {
@@ -191,7 +201,9 @@ const Game = () => {
         1: player1Refreshed,
         2: player2Refreshed,
         board: boardRefreshed,
-        turn: randomiseTurn()
+        turn: randomiseTurn(),
+        cardInHand: false,
+        indexOfCard: null
       })
     }, [state]
   )
@@ -223,11 +235,19 @@ const Game = () => {
         classNames({[`player-${state.turn}`]: true})
       }>Player {state.turn}'s turn!</h1>
       <div className='game'>
-        <Deck player={1} deck={state[1].deck} onClick={onPickUp} />
+        <Deck player={1}
+          deck={ state[1].deck }
+          onClick={ onPickUp }
+          turn={ state.turn }/>
         <Board board={state.board} turn={state.turn} onClick={onPutDown}/>
-        <Deck player={2} deck={state[2].deck} onClick={onPickUp} />
+        <Deck player={2}
+          deck={ state[2].deck }
+          onClick={ onPickUp }
+          turn={ state.turn }/>
       </div>
       <button onClick={onRestart}>Restart</button>
+      {state.indexOfCard}
+      {state.cardInHand}
     </div>
   );
 };

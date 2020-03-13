@@ -2,6 +2,31 @@
   position: relative;
   height: 100%;
   width: 100%;
+  top: 0;
+  left: 0;
+  filter: none;
+  transition: top 1s, left 1s, filter 1s;
+  transition-timing-function: cubic-bezier(0, 1, 0.25, 1);
+}
+
+.card.playable:hover {
+  top: -5px;
+  left: -5px;
+  filter: drop-shadow(10px 10px 10px #222);
+}
+
+.card__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0.35;
+}
+
+.card__image {
+  width: 104px;
+  height: 128px;
 }
 
 .player-1 {

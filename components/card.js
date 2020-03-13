@@ -3,13 +3,17 @@ const classNames = require('classnames');
 const Card = (props) => (
   <div className={classNames({
     card: true,
-    [`player-${props.player}`]: true,
-    inactive: props.played
+    inactive: props.played,
+    playable: props.playable
   })}>
-    <span className='north' >{ props.stats.north }</span>
-    <span className='east' >{ props.stats.east }</span>
-    <span className='south' >{ props.stats.south }</span>
-    <span className='west' >{ props.stats.west }</span>
+    <div className={classNames({
+      card__overlay: true,
+      [`player-${props.player}`]: true,
+    })} />
+    <img className={classNames({
+      card__image: true,
+      inactive: !props.imageUrl
+    })} src={ props.imageUrl }/>
   </div>
 );
 

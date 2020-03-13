@@ -1,10 +1,10 @@
 import Layout from '../components/layout';
-import Library from '../components/library';
+import LibraryWrapper from '../components/library-wrapper';
 
 export default function Compendium() {
   return (
     <Layout>
-      <Library />
+      <LibraryWrapper />
     </Layout>
   );
 }

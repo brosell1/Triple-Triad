@@ -17,7 +17,11 @@ const Deck = (props) => (
     <h1 className='deck__title'>Player { props.player }</h1>
     { props.deck.map((item, index) => (
       <Panel onClick={() => props.onClick(props.player, index)} key={ index }>
-        <Card stats={ item.stats } player={ props.player } played={ item.played }/>
+        <Card imageUrl={ item.imageUrl }
+          stats={ item.stats }
+          player={ props.player }
+          played={ item.played }
+          playable={ props.player === props.turn }/>
       </Panel>
     ))}
   </div>
