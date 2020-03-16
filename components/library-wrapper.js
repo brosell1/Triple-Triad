@@ -1,5 +1,4 @@
 import React, { useState, useCallback, useEffect } from "react";
-import fetch from 'node-fetch';
 
 import Deck from './deck';
 import Library from './library';
@@ -38,20 +37,3 @@ const LibraryWrapper = () => {
 };
 
 export default LibraryWrapper;
-
-// LibraryWrapper.getInitialProps = () => {
-  //   console.log(Cards);
-  //   return {Cards}
-  // }
-
-  // export async function getStaticProps() {
-    //   const res = await fetch('https://triad.raelys.com/api/cards/');
-    //   const cards = await res.json();
-    //   console.log(cards);
-    //
-    //   return {
-      //     props: {
-        //       cards
-        //     }
-        //   }
-        // }
