@@ -13,7 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "classnames": "^2.2.6",
-    "next": "^9.2.2",
+    "next": "^9.5.5",
     "node-fetch": "^2.6.0",
     "node-sass": "^4.13.1",
     "react": "^16.13.0",
